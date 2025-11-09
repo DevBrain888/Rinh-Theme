@@ -1,19 +1,19 @@
 <p align="center">
-      <img src="https://i.ibb.co/d9mzMtH/Logo-Geo-Rinch.png" alt="Project logo" width="400">
+      <img src="https://i.ibb.co/sdnxHryH/logo-RINH-theme.png" alt="Project logo" width="400">
 </p>
 
 <p align="center">
-  <a href="https://github.com/DevBrain888/GeoRinch/stargazers"><img src="https://img.shields.io/github/stars/DevBrain888/GeoRinch" alt="Stars Badge"/></a>
-  <a href="https://github.com/DevBrain888/GeoRinch/network/members"><img src="https://img.shields.io/github/forks/DevBrain888/GeoRinch" alt="Forks Badge"/></a>
-  <a href="https://github.com/DevBrain888/GeoRinch/pulls"><img src="https://img.shields.io/github/issues-pr/DevBrain888/GeoRinch" alt="Pull Requests Badge"/></a>
-  <a href="https://github.com/DevBrain888/GeoRinch/issues"><img src="https://img.shields.io/github/issues/DevBrain888/GeoRinch" alt="Issues Badge"/></a>
-  <a href="https://github.com/DevBrain888/GeoRinch/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/DevBrain888/GeoRinch?color=2b9348"></a>
-  <a href="https://github.com/DevBrain888/GeoRinch/blob/master/LICENSE"><img src="https://img.shields.io/github/license/DevBrain888/GeoRinch?color=2b9348" alt="License Badge"/></a>
+  <a href="https://github.com/DevBrain888/Rinh-Theme/stargazers"><img src="https://img.shields.io/github/stars/DevBrain888/Rinh-Theme" alt="Stars Badge"/></a>
+  <a href="https://github.com/DevBrain888/Rinh-Theme/network/members"><img src="https://img.shields.io/github/forks/DevBrain888/Rinh-Theme" alt="Forks Badge"/></a>
+  <a href="https://github.com/DevBrain888/Rinh-Theme/pulls"><img src="https://img.shields.io/github/issues-pr/DevBrain888/Rinh-Theme" alt="Pull Requests Badge"/></a>
+  <a href="https://github.com/DevBrain888/Rinh-Theme/issues"><img src="https://img.shields.io/github/issues/DevBrain888/Rinh-Theme" alt="Issues Badge"/></a>
+  <a href="https://github.com/DevBrain888/Rinh-Theme/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/DevBrain888/Rinh-Theme?color=2b9348"></a>
+  <a href="https://github.com/DevBrain888/Rinh-Theme/blob/master/LICENSE"><img src="https://img.shields.io/github/license/DevBrain888/Rinh-Theme?color=2b9348" alt="License Badge"/></a>
 
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/python_3.12%2B-blue" alt="Python Version">
-  <img src="https://img.shields.io/badge/version-v_1.0.0-violet" alt="GeoRinch Version">
+  <img src="https://img.shields.io/badge/version-v_1.0.0-violet" alt="Rinh-Theme Version">
 </p>
 
 ## About
