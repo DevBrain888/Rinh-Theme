@@ -6,6 +6,11 @@
 <div class="row">
     <div class="col-12">
         <h1 class="mb-4"><i class="bi bi-pencil-square"></i> Назначение тем вручную</h1>
+        @if(isset($leaderStudent))
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> Вы работаете с группой: <strong>{{ $leaderStudent->group }}</strong>
+            </div>
+        @endif
     </div>
 </div>
 
@@ -38,9 +43,15 @@
                     <select class="form-select" id="theme_id" name="theme_id" required>
                         <option value="">Выберите тему...</option>
                         @foreach($availableThemes ?? [] as $theme)
-                            <option value="{{ $theme->id }}">{{ $theme->title }}</option>
+                            <option value="{{ $theme->id }}">
+                                {{ $theme->title }}
+                                @if($theme->group)
+                                    (Группа: {{ $theme->group }})
+                                @endif
+                            </option>
                         @endforeach
                     </select>
+                    <div class="form-text">Доступны только темы для вашей группы или общие темы (без указания группы)</div>
                 </div>
             </div>
             <div class="row">
@@ -48,6 +59,21 @@
                     <label for="phone" class="form-label">Номер телефона студента</label>
                     <input type="text" class="form-control" id="phone" name="phone" placeholder="+7 (999) 123-45-67">
                     <div class="form-text">Укажите номер телефона студента при назначении темы</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="supervisor_id" class="form-label">Дипломный руководитель <span class="text-danger">*</span></label>
+                    <select class="form-select" id="supervisor_id" name="supervisor_id" required>
+                        <option value="">Выберите руководителя...</option>
+                        @foreach($supervisors ?? [] as $supervisor)
+                            <option value="{{ $supervisor->id }}">
+                                {{ $supervisor->name }}
+                                @if($supervisor->position)
+                                    ({{ $supervisor->position }})
+                                @endif
+                            </option>
+                        @endforeach
+                    </select>
+                    <div class="form-text">Выберите научного руководителя для темы (обязательно)</div>
                 </div>
             </div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-end">

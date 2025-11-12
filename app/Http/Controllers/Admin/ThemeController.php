@@ -11,7 +11,7 @@ class ThemeController extends Controller
 {
     public function index()
     {
-        $themes = Theme::with('assignedUser')->orderBy('created_at', 'desc')->get();
+        $themes = Theme::with(['assignedUser', 'student', 'supervisor'])->orderBy('created_at', 'desc')->get();
         return view('admin.themes', compact('themes'));
     }
 
@@ -21,7 +21,7 @@ class ThemeController extends Controller
             'themes_file' => 'nullable|file|mimes:csv,xlsx,xls|max:10240',
             'themes_text' => 'nullable|string|required_without:themes_file',
         ], [
-            'themes_file.mimes' => 'Поддерживаются только форматы Excel (.xlsx, .xls) и CSV (согласно ТЗ).',
+            'themes_file.mimes' => 'Поддерживаются только форматы Excel (.xlsx, .xls) и CSV.',
             'themes_text.required_without' => 'Пожалуйста, загрузите файл или введите темы в текстовое поле.',
         ]);
 
@@ -63,6 +63,7 @@ class ThemeController extends Controller
                 Theme::create([
                     'title' => trim($themeData['title']),
                     'description' => isset($themeData['description']) ? trim($themeData['description']) : null,
+                    'group' => isset($themeData['group']) && !empty($themeData['group']) ? trim($themeData['group']) : null,
                     'status' => 'available',
                 ]);
                 $count++;
@@ -111,6 +112,7 @@ class ThemeController extends Controller
                 $themes[] = [
                     'title' => $data[0],
                     'description' => $data[1] ?? null,
+                    'group' => isset($data[2]) && !empty($data[2]) ? trim($data[2]) : null,
                 ];
             }
         }
@@ -136,6 +138,7 @@ class ThemeController extends Controller
                     $themes[] = [
                         'title' => trim($row[0]),
                         'description' => isset($row[1]) && !empty($row[1]) ? trim($row[1]) : null,
+                        'group' => isset($row[2]) && !empty($row[2]) ? trim($row[2]) : null,
                     ];
                 }
             }
@@ -159,6 +162,7 @@ class ThemeController extends Controller
                 $themes[] = [
                     'title' => $line,
                     'description' => null,
+                    'group' => null, // При ручном вводе группа не указывается
                 ];
             }
         }

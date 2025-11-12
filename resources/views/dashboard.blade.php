@@ -26,6 +26,9 @@
                     <a href="{{ route('admin.students') }}" class="btn btn-primary">
                         <i class="bi bi-people"></i> Управление студентами
                     </a>
+                    <a href="{{ route('admin.supervisors') }}" class="btn btn-primary">
+                        <i class="bi bi-person-badge"></i> Управление руководителями
+                    </a>
                     <form action="{{ route('admin.distribute') }}" method="POST" class="d-grid">
                         @csrf
                         <button type="submit" class="btn btn-success" onclick="return confirm('Вы уверены, что хотите распределить темы автоматически? Это назначит темы всем студентам случайным образом.');">

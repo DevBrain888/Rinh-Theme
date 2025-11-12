@@ -6,6 +6,11 @@
 <div class="row">
     <div class="col-12">
         <h1 class="mb-4"><i class="bi bi-list-check"></i> Распределение тем в группе</h1>
+        @if(isset($leaderStudent))
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> Вы работаете с группой: <strong>{{ $leaderStudent->group }}</strong>
+            </div>
+        @endif
     </div>
 </div>
 
@@ -22,6 +27,7 @@
                         <th>Группа</th>
                         <th>Телефон</th>
                         <th>Тема</th>
+                        <th>Руководитель</th>
                         <th>Статус</th>
                     </tr>
                 </thead>
@@ -39,6 +45,13 @@
                                 @endif
                             </td>
                             <td>
+                                @if($student->theme && $student->theme->supervisor)
+                                    <span class="badge bg-primary">{{ $student->theme->supervisor->name }}</span>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td>
                                 @if($student->theme)
                                     <span class="badge bg-success">Назначена</span>
                                 @else
@@ -48,7 +61,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center text-muted">
+                            <td colspan="6" class="text-center text-muted">
                                 <i class="bi bi-inbox"></i> Студенты еще не загружены
                             </td>
                         </tr>

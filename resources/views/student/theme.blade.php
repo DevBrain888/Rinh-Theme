@@ -23,6 +23,23 @@
                 <p>{{ $student->theme->description }}</p>
             @endif
             
+            @if($student->theme->supervisor)
+                <h5>Научный руководитель:</h5>
+                <p>
+                    <strong>{{ $student->theme->supervisor->name }}</strong>
+                    @if($student->theme->supervisor->position)
+                        <br><small class="text-muted">{{ $student->theme->supervisor->position }}</small>
+                    @endif
+                    @if($student->theme->supervisor->email)
+                        <br><small class="text-muted"><i class="bi bi-envelope"></i> {{ $student->theme->supervisor->email }}</small>
+                    @endif
+                </p>
+            @else
+                <div class="alert alert-info mt-3">
+                    <i class="bi bi-info-circle"></i> Научный руководитель еще не назначен
+                </div>
+            @endif
+            
             <div class="mt-4">
                 <span class="badge bg-success">Назначена</span>
                 @if($student->theme->created_at)

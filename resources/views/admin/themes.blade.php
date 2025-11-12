@@ -29,8 +29,8 @@
                         <label for="themes_file" class="form-label">Выберите файл с темами (необязательно)</label>
                         <input type="file" class="form-control" id="themes_file" name="themes_file" accept=".csv,.xlsx,.xls">
                         <div class="form-text">
-                            <strong>Поддерживаемые форматы:</strong> Excel (.xlsx, .xls) или CSV (согласно ТЗ)
-                            <br><strong>Формат файла:</strong> первая колонка - название темы, вторая колонка - описание (опционально)
+                            <strong>Поддерживаемые форматы:</strong> Excel (.xlsx, .xls) или CSV
+                            <br><strong>Формат файла:</strong> первая колонка - название темы, вторая колонка - описание (опционально), третья колонка - группа
                         </div>
                     </div>
                     <div class="mb-3">
@@ -67,6 +67,8 @@
                         <th>ID</th>
                         <th>Название темы</th>
                         <th>Описание</th>
+                        <th>Группа</th>
+                        <th>Руководитель</th>
                         <th>Статус</th>
                         <th>Назначена</th>
                         <th>Действия</th>
@@ -79,6 +81,20 @@
                             <td><strong>{{ $theme->title }}</strong></td>
                             <td>{{ $theme->description ?? '-' }}</td>
                             <td>
+                                @if($theme->group)
+                                    <span class="badge bg-info">{{ $theme->group }}</span>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($theme->supervisor)
+                                    <span class="badge bg-primary">{{ $theme->supervisor->name }}</span>
+                                @else
+                                    <span class="text-muted">-</span>
+                                @endif
+                            </td>
+                            <td>
                                 @if($theme->status === 'assigned')
                                     <span class="badge bg-success">Назначена</span>
                                 @else
@@ -88,6 +104,8 @@
                             <td>
                                 @if($theme->assignedUser)
                                     {{ $theme->assignedUser->name }}
+                                @elseif($theme->student)
+                                    {{ $theme->student->name }} ({{ $theme->student->group }})
                                 @else
                                     <span class="text-muted">-</span>
                                 @endif
@@ -100,7 +118,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center text-muted">
+                            <td colspan="8" class="text-center text-muted">
                                 <i class="bi bi-inbox"></i> Темы еще не загружены
                             </td>
                         </tr>

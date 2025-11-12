@@ -11,12 +11,17 @@ class Theme extends Model
     protected $fillable = [
         'title',
         'description',
+        'group',
         'status',
         'assigned_to',
+        'supervisor_id',
+        'reserved_by_group',
+        'reserved_at',
     ];
 
     protected $casts = [
         'status' => 'string',
+        'reserved_at' => 'datetime',
     ];
 
     public function assignedUser(): BelongsTo
@@ -27,5 +32,10 @@ class Theme extends Model
     public function student(): HasOne
     {
         return $this->hasOne(Student::class, 'theme_id');
+    }
+
+    public function supervisor(): BelongsTo
+    {
+        return $this->belongsTo(Supervisor::class);
     }
 }

@@ -11,55 +11,71 @@ class DistributionController extends Controller
 {
     public function distribute(Request $request)
     {
-        // Получаем все доступные темы
-        $availableThemes = Theme::where('status', 'available')
-            ->whereNull('assigned_to')
-            ->get();
-
-        // Получаем всех студентов без назначенных тем
+        // Получаем всех студентов без назначенных тем, группируем по группам
         $studentsWithoutThemes = Student::whereNull('theme_id')->get();
-
-        if ($availableThemes->isEmpty()) {
-            return redirect()->route('dashboard')
-                ->with('error', 'Нет доступных тем для распределения. Загрузите темы в разделе "Управление темами".');
-        }
-
+        
         if ($studentsWithoutThemes->isEmpty()) {
             return redirect()->route('dashboard')
                 ->with('error', 'Нет студентов без назначенных тем. Загрузите студентов в разделе "Управление студентами".');
         }
 
-        // Перемешиваем темы и студентов случайным образом
-        $themes = $availableThemes->shuffle();
-        $students = $studentsWithoutThemes->shuffle();
+        // Группируем студентов по группам
+        $studentsByGroup = $studentsWithoutThemes->groupBy('group');
+        
+        $totalDistributed = 0;
+        $messages = [];
 
-        // Распределяем темы
-        $count = 0;
-        $minCount = min($themes->count(), $students->count());
+        // Распределяем темы для каждой группы отдельно
+        foreach ($studentsByGroup as $group => $students) {
+            // Получаем доступные темы для этой группы (темы с этой группой или без группы)
+            $availableThemes = Theme::where('status', 'available')
+                ->whereNull('assigned_to')
+                ->where(function($query) use ($group) {
+                    $query->where('group', $group)
+                          ->orWhereNull('group');
+                })
+                ->get();
 
-        for ($i = 0; $i < $minCount; $i++) {
-            $theme = $themes[$i];
-            $student = $students[$i];
+            if ($availableThemes->isEmpty()) {
+                $messages[] = "Группа {$group}: нет доступных тем";
+                continue;
+            }
 
-            // Назначаем тему студенту
-            $student->theme_id = $theme->id;
-            $student->save();
+            // Перемешиваем темы и студентов случайным образом
+            $themes = $availableThemes->shuffle();
+            $groupStudents = $students->shuffle();
 
-            // Обновляем статус темы
-            $theme->status = 'assigned';
-            $theme->save();
+            // Распределяем темы для этой группы
+            $count = 0;
+            $minCount = min($themes->count(), $groupStudents->count());
 
-            $count++;
+            for ($i = 0; $i < $minCount; $i++) {
+                $theme = $themes[$i];
+                $student = $groupStudents[$i];
+
+                // Назначаем тему студенту
+                $student->theme_id = $theme->id;
+                $student->save();
+
+                // Обновляем статус темы
+                $theme->status = 'assigned';
+                $theme->save();
+
+                $count++;
+                $totalDistributed++;
+            }
+
+            if ($count > 0) {
+                $messages[] = "Группа {$group}: распределено {$count} тем";
+            }
         }
 
-        $message = "Успешно распределено тем: {$count}";
-        if ($themes->count() > $students->count()) {
-            $remaining = $themes->count() - $students->count();
-            $message .= ". Осталось свободных тем: {$remaining}";
-        } elseif ($students->count() > $themes->count()) {
-            $remaining = $students->count() - $themes->count();
-            $message .= ". Студентов без тем: {$remaining}";
+        if ($totalDistributed === 0) {
+            return redirect()->route('dashboard')
+                ->with('error', 'Не удалось распределить темы. Убедитесь, что есть доступные темы для групп студентов.');
         }
+
+        $message = "Успешно распределено тем: {$totalDistributed}. " . implode('; ', $messages);
 
         return redirect()->route('dashboard')->with('success', $message);
     }

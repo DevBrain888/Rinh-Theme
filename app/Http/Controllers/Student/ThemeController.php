@@ -12,7 +12,7 @@ class ThemeController extends Controller
     {
         // Находим студента по email текущего пользователя
         $student = Student::where('email', auth()->user()->email)
-            ->with('theme')
+            ->with('theme.supervisor')  // Загружаем руководителя через тему
             ->first();
         
         return view('student.theme', compact('student'));

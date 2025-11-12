@@ -21,7 +21,7 @@ class StudentController extends Controller
             'students_file' => 'required|file|mimes:csv,xlsx,xls|max:10240',
         ], [
             'students_file.required' => 'Пожалуйста, выберите файл для загрузки.',
-            'students_file.mimes' => 'Поддерживаются только форматы Excel (.xlsx, .xls) и CSV (согласно ТЗ).',
+            'students_file.mimes' => 'Поддерживаются только форматы Excel (.xlsx, .xls) и CSV.',
         ]);
 
         $file = $request->file('students_file');

@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\ThemeController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\DistributionController;
+use App\Http\Controllers\Admin\SupervisorController;
 use App\Http\Controllers\Leader\AssignmentController;
 use App\Http\Controllers\Student\ThemeController as StudentThemeController;
 use App\Http\Controllers\Auth\LoginController;
@@ -32,6 +33,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/students', [StudentController::class, 'index'])->name('students');
     Route::post('/students/upload', [StudentController::class, 'upload'])->name('students.upload');
     Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+    Route::get('/supervisors', [SupervisorController::class, 'index'])->name('supervisors');
+    Route::post('/supervisors/upload', [SupervisorController::class, 'upload'])->name('supervisors.upload');
+    Route::delete('/supervisors/{id}', [SupervisorController::class, 'destroy'])->name('supervisors.destroy');
     Route::post('/distribute', [DistributionController::class, 'distribute'])->name('distribute');
 });
 
