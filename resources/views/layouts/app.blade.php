@@ -11,6 +11,22 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1 0 auto;
+        }
+        footer {
+            flex-shrink: 0;
+        }
+    </style>
+    
     @stack('styles')
 </head>
 <body>
@@ -91,7 +107,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-light py-4 mt-5">
+    <footer class="bg-light py-4">
         <div class="container text-center">
             <p class="text-muted mb-0">&copy; {{ date('Y') }} Rinh Theme. Система распределения тем для студентов.</p>
         </div>
@@ -102,4 +118,3 @@
     @stack('scripts')
 </body>
 </html>
-

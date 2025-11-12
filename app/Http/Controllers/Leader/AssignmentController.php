@@ -11,9 +11,21 @@ class AssignmentController extends Controller
 {
     public function index()
     {
-        // Получаем студентов и темы для текущей группы старосты
-        // Пока показываем всех студентов и все темы
-        $students = Student::with('theme')->orderBy('name')->get();
+        // Получаем группу старосты через его email
+        $leaderEmail = auth()->user()->email;
+        $leaderStudent = Student::where('email', $leaderEmail)->first();
+        
+        if ($leaderStudent) {
+            // Фильтруем студентов по группе старосты
+            $students = Student::where('group', $leaderStudent->group)
+                ->with('theme')
+                ->orderBy('name')
+                ->get();
+        } else {
+            // Если староста не найден в таблице студентов, показываем всех
+            $students = Student::with('theme')->orderBy('name')->get();
+        }
+        
         $themes = Theme::orderBy('title')->get();
         
         return view('leader.assignments', compact('students', 'themes'));
@@ -21,9 +33,22 @@ class AssignmentController extends Controller
 
     public function create()
     {
-        // Получаем свободные темы и студентов без тем
+        // Получаем группу старосты через его email
+        $leaderEmail = auth()->user()->email;
+        $leaderStudent = Student::where('email', $leaderEmail)->first();
+        
+        // Получаем свободные темы
         $availableThemes = Theme::where('status', 'available')->orderBy('title')->get();
-        $studentsWithoutThemes = Student::whereNull('theme_id')->orderBy('name')->get();
+        
+        // Получаем студентов без тем
+        $query = Student::whereNull('theme_id');
+        
+        // Фильтруем по группе старосты, если он найден в таблице студентов
+        if ($leaderStudent) {
+            $query->where('group', $leaderStudent->group);
+        }
+        
+        $studentsWithoutThemes = $query->orderBy('name')->get();
         
         return view('leader.assign', compact('availableThemes', 'studentsWithoutThemes'));
     }
@@ -38,6 +63,15 @@ class AssignmentController extends Controller
 
         $student = Student::findOrFail($request->student_id);
         $theme = Theme::findOrFail($request->theme_id);
+        
+        // Проверяем, что староста может назначать темы только студентам своей группы
+        $leaderEmail = auth()->user()->email;
+        $leaderStudent = Student::where('email', $leaderEmail)->first();
+        
+        if ($leaderStudent && $student->group !== $leaderStudent->group) {
+            return redirect()->route('leader.assign')
+                ->with('error', 'Вы можете назначать темы только студентам своей группы.');
+        }
 
         // Проверяем, что тема свободна
         if ($theme->status === 'assigned') {

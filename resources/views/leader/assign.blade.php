@@ -11,7 +11,7 @@
 
 <div class="card">
     <div class="card-header bg-success text-white">
-        <h5 class="mb-0">Выберите студента и тему (согласно ТЗ: с указанием номера телефона)</h5>
+        <h5 class="mb-0">Выберите студента и тему</h5>
     </div>
     <div class="card-body">
         <form action="{{ route('leader.assign.store') }}" method="POST">
@@ -21,10 +21,17 @@
                     <label for="student_id" class="form-label">Студент</label>
                     <select class="form-select" id="student_id" name="student_id" required>
                         <option value="">Выберите студента...</option>
-                        @foreach($studentsWithoutThemes ?? [] as $student)
+                        @forelse($studentsWithoutThemes ?? [] as $student)
                             <option value="{{ $student->id }}">{{ $student->name }} ({{ $student->group }})</option>
-                        @endforeach
+                        @empty
+                            <option value="" disabled>Нет доступных студентов без тем</option>
+                        @endforelse
                     </select>
+                    @if(($studentsWithoutThemes ?? collect())->isEmpty())
+                        <div class="form-text text-warning">
+                            <i class="bi bi-exclamation-triangle"></i> Нет студентов без назначенных тем в вашей группе.
+                        </div>
+                    @endif
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="theme_id" class="form-label">Тема</label>
@@ -38,7 +45,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="phone" class="form-label">Номер телефона студента (согласно ТЗ)</label>
+                    <label for="phone" class="form-label">Номер телефона студента</label>
                     <input type="text" class="form-control" id="phone" name="phone" placeholder="+7 (999) 123-45-67">
                     <div class="form-text">Укажите номер телефона студента при назначении темы</div>
                 </div>
